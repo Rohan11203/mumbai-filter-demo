@@ -30,6 +30,7 @@ import {
   ArrowLeft,
   Box
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Mock product data with videos
 const product = {
@@ -98,9 +99,7 @@ const product = {
     "Flow rate: 2500 LPH",
     "Operating pressure: 6 bar max",
     "Temperature range: 5°C to 80°C",
-    "Easy cartridge replacement system",
-    "Pressure differential indicator",
-    "Sanitary tri-clamp connections"
+   
   ],
   
   specifications: {
@@ -146,15 +145,17 @@ export function ProductDetails({ onNavigate }: { onNavigate?: (page: string) => 
     setIsModalOpen(true);
   };
 
+  const navigate = useNavigate()
+
   return (
-    <div className="min-h-screen py-8" style={{ backgroundColor: colors.surfaceLight }}>
+    <div className="min-h-screen py-8 " style={{ backgroundColor: colors.surfaceLight }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="flex items-center space-x-2 text-sm mb-8" style={{ color: colors.textSecondary }}>
           <button 
-            className="flex items-center transition-colors duration-200 hover:opacity-75"
+            className="flex cursor-pointer items-center transition-colors duration-200 hover:opacity-75"
             style={{ color: colors.secondary }}
-            onClick={() => onNavigate?.('products')}
+            onClick={() => navigate("/products")}
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back to Products
@@ -338,7 +339,52 @@ export function ProductDetails({ onNavigate }: { onNavigate?: (page: string) => 
                   3D Model
                 </Button>
               </div>
+
+              
             </div>
+
+            <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-green-50">
+              <CardContent className="p-6">
+                <h4 className="font-bold text-[#1A237E] mb-4 text-center">Why Choose Mumbai Filter Corporation?</h4>
+                <div className="grid grid-cols-3 gap-4">
+                  <motion.div 
+                    className="text-center"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Award className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div className="text-sm font-bold text-gray-900">2 Year Warranty</div>
+                    <div className="text-xs text-gray-600">Comprehensive coverage</div>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="text-center"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Truck className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div className="text-sm font-bold text-gray-900">Free Installation</div>
+                    <div className="text-xs text-gray-600">Within city limits</div>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="text-center"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Clock className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div className="text-sm font-bold text-gray-900">24/7 Support</div>
+                    <div className="text-xs text-gray-600">Technical assistance</div>
+                  </motion.div>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
 
           {/* Enhanced Product Information */}
@@ -519,49 +565,10 @@ export function ProductDetails({ onNavigate }: { onNavigate?: (page: string) => 
               </CardContent>
             </Card>
 
+            
+
             {/* Trust Indicators */}
-            <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-green-50">
-              <CardContent className="p-6">
-                <h4 className="font-bold text-[#1A237E] mb-4 text-center">Why Choose Mumbai Filter Corporation?</h4>
-                <div className="grid grid-cols-3 gap-4">
-                  <motion.div 
-                    className="text-center"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Award className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div className="text-sm font-bold text-gray-900">2 Year Warranty</div>
-                    <div className="text-xs text-gray-600">Comprehensive coverage</div>
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="text-center"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Truck className="w-6 h-6 text-green-600" />
-                    </div>
-                    <div className="text-sm font-bold text-gray-900">Free Installation</div>
-                    <div className="text-xs text-gray-600">Within city limits</div>
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="text-center"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Clock className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <div className="text-sm font-bold text-gray-900">24/7 Support</div>
-                    <div className="text-xs text-gray-600">Technical assistance</div>
-                  </motion.div>
-                </div>
-              </CardContent>
-            </Card>
+            
           </motion.div>
         </div>
 
@@ -574,20 +581,20 @@ export function ProductDetails({ onNavigate }: { onNavigate?: (page: string) => 
           <Card className="shadow-xl border-0">
             <CardContent className="p-0">
               <Tabs defaultValue="specifications" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 rounded-none border-b-2 border-gray-100 bg-gray-50">
-                  <TabsTrigger value="specifications" className="py-4 font-medium data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-[#007BFF]">
+                <TabsList className="grid w-full  grid-cols-4 rounded-none border-b-2 border-gray-50 h-18">
+                  <TabsTrigger value="specifications" className="py-4 font-medium data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-[#1357a0]">
                     <FileText className="w-4 h-4 mr-2" />
                     Specifications
                   </TabsTrigger>
-                  <TabsTrigger value="applications" className="py-4 font-medium data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-[#007BFF]">
+                  <TabsTrigger value="applications" className="py-4 font-medium data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-[#1357a0]">
                     <CheckCircle className="w-4 h-4 mr-2" />
                     Applications
                   </TabsTrigger>
-                  <TabsTrigger value="documents" className="py-4 font-medium data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-[#007BFF]">
+                  <TabsTrigger value="documents" className="py-4 font-medium data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-[#1357a0]">
                     <Download className="w-4 h-4 mr-2" />
                     Documents
                   </TabsTrigger>
-                  <TabsTrigger value="reviews" className="py-4 font-medium data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-[#007BFF]">
+                  <TabsTrigger value="reviews" className="py-4 font-medium data-[state=active]:bg-white data-[state=active]:border-b-2 data-[state=active]:border-[#1357a0]">
                     <Star className="w-4 h-4 mr-2" />
                     Reviews
                   </TabsTrigger>
@@ -718,6 +725,8 @@ export function ProductDetails({ onNavigate }: { onNavigate?: (page: string) => 
         modelTitle={product.name}
         modelDescription="Interactive 3D model showing detailed construction and components"
       />
+
+      
     </div>
   );
 }

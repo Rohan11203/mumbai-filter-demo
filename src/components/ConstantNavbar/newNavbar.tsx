@@ -204,7 +204,7 @@ function MegaMenuDropdown({ isScrolled }) {
     timeoutRef.current = setTimeout(() => setActiveMenu(false), 200);
   };
 
-  const navItemColor = colors.textPrimary;
+  const navItemColor = isScrolled ? colors.textPrimary : "white";
 
   return (
     <div
@@ -233,7 +233,7 @@ function MegaMenuDropdown({ isScrolled }) {
         <span>Company</span>
       </button>
 
-      <button
+       <button
         className="flex items-center space-x-1 cursor-pointer py-2 px-3 font-medium transition-all duration-200 rounded-lg hover:bg-black/10"
         style={{ color: navItemColor }}
       >
@@ -258,7 +258,7 @@ function MegaMenuDropdown({ isScrolled }) {
   );
 }
 
-export function Navigation() {
+export function NewNavbar() {
   const { colors } = useTheme();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -279,10 +279,10 @@ export function Navigation() {
     }
   };
 
-  const navTextColor = "black";
-  const searchBorderColor = "gray";
-  const searchBgColor = "transparent";
-  const placeholderColor = "black";
+  const navTextColor = isScrolled ? "black" : "white";
+  const searchBorderColor = isScrolled ? "gray" : "rgba(255, 255, 255, 0.4)";
+  const searchBgColor = isScrolled ? "transparent" : "rgba(255, 255, 255, 0.1)";
+  const placeholderColor = isScrolled ? "black" : "rgba(255,255,255,0.7)";
 
   return (
     <header
@@ -296,7 +296,7 @@ export function Navigation() {
         style={{
           backgroundColor: isScrolled
             ? "rgba(255, 255, 255, 0.8)"
-            : "rgba(255, 255, 255, 255)",
+            : "transparent",
           backdropFilter: isScrolled ? "blur(10px)" : "none",
           WebkitBackdropFilter: isScrolled ? "blur(10px)" : "none",
           borderBottom: `1px solid ${
@@ -358,7 +358,9 @@ export function Navigation() {
                 <Button
                   className="group cursor-pointer hidden sm:flex items-center justify-center text-white transition-all duration-300 hover:opacity-90 shadow-lg rounded-full px-5 py-2"
                   style={{
-                    backgroundColor: colors.secondary,
+                    backgroundColor: isScrolled
+                      ? colors.secondary
+                      : "rgba(255, 255, 255, 0.2)",
                     color: "white",
                     border: `1px solid ${
                       isScrolled ? "transparent" : "rgba(255, 255, 255, 0.8)"

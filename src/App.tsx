@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, useNavigate, useParams, useSearchParams, useLocation, HashRouter } from "react-router-dom";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
@@ -15,168 +15,142 @@ import { QuoteRequestForm } from "./components/forms/QuoteRequestForm";
 import { ProductForm } from "./components/forms/ProductForm";
 import { Toaster } from "./components/ui/sonner";
 
-type PageType = 'home' | 'products' | 'product-details' | 'contact' | 'quote' | 'search' | 'admin-dashboard' | 'admin-products' | 'admin-add-product' | 'admin-edit-product';
+// --- Page Wrapper Components to inject router logic ---
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageType>('home');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+const HomePage = () => (
+    <>
+        <main>
+            <Hero />
+            <ProductCategories />
+            <ValueProposition />
+        </main>
+        <Footer />
+    </>
+);
 
-  const handleNavigate = (page: string) => {
-    setCurrentPage(page as PageType);
-  };
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    if (query.trim()) {
-      setCurrentPage('search');
-    }
-  };
-
-  const handleProductClick = (productId: number) => {
-    // In a real app, you'd fetch the product data
-    setSelectedProduct({ id: productId });
-    setCurrentPage('product-details');
-  };
-
-  const handleAddProduct = () => {
-    setCurrentPage('admin-add-product');
-  };
-
-  const handleEditProduct = (product: any) => {
-    setSelectedProduct(product);
-    setCurrentPage('admin-edit-product');
-  };
-
-  const handleSaveProduct = (productData: any) => {
-    console.log('Saving product:', productData);
-    // In real app, save to backend
-    setCurrentPage('admin-products');
-  };
-
-
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return (
-          <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-background)' }}>
-            <Navigation onNavigate={handleNavigate} onSearch={handleSearch} />
-            <main>
-              <Hero />
-              <ProductCategories />
-              <ValueProposition />
-            </main>
-            <Footer />
-          </div>
-        );
-      case 'products':
-        return (
-          <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-background)' }}>
-            <Navigation onNavigate={handleNavigate} onSearch={handleSearch} />
+const ProductsPage = () => {
+    const navigate = useNavigate();
+    const handleProductClick = (productId) => {
+        navigate(`/products/${productId}`);
+    };
+    return (
+        <>
             <ProductListing onProductClick={handleProductClick} />
             <Footer />
-          </div>
-        );
-      case 'product-details':
-        return (
-          <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-background)' }}>
-            <Navigation onNavigate={handleNavigate} onSearch={handleSearch} />
-            <ProductDetails onNavigate={handleNavigate} />
-            <Footer />
-          </div>
-        );
-      case 'search':
-        return (
-          <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-background)' }}>
-            <Navigation onNavigate={handleNavigate} onSearch={handleSearch} />
-            <SearchResults 
-              searchQuery={searchQuery} 
-              onProductClick={handleProductClick} 
-            />
-            <Footer />
-          </div>
-        );
-      case 'admin-dashboard':
-        return <Dashboard onNavigate={handleNavigate} />;
-      case 'admin-products':
-        return (
-          <ProductManagement 
-            onNavigate={handleNavigate}
-            onAddProduct={handleAddProduct}
-            onEditProduct={handleEditProduct}
-          />
-        );
-      case 'admin-add-product':
-        return (
-          <div className="min-h-screen py-8" style={{ backgroundColor: 'var(--theme-surfaceLight)' }}>
-            <ProductForm 
-              onSave={handleSaveProduct}
-              onCancel={() => setCurrentPage('admin-products')}
-            />
-          </div>
-        );
-      case 'admin-edit-product':
-        return (
-          <div className="min-h-screen py-8" style={{ backgroundColor: 'var(--theme-surfaceLight)' }}>
-            <ProductForm 
-              product={selectedProduct}
-              onSave={handleSaveProduct}
-              onCancel={() => setCurrentPage('admin-products')}
-            />
-          </div>
-        );
-      case 'contact':
-        return (
-          <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-background)' }}>
-            <Navigation onNavigate={handleNavigate} onSearch={handleSearch} />
-            <div className="py-16" style={{ backgroundColor: 'var(--theme-surfaceLight)' }}>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                  <h1 className="text-4xl font-bold mb-4" style={{ color: 'var(--theme-textPrimary)' }}>Contact Us</h1>
-                  <p className="text-xl max-w-3xl mx-auto" style={{ color: 'var(--theme-textSecondary)' }}>
-                    Get in touch with our technical experts for personalized filtration solutions
-                  </p>
-                </div>
-                <ContactForm />
-              </div>
-            </div>
-            <Footer />
-          </div>
-        );
-      case 'quote':
-        return (
-          <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-background)' }}>
-            <Navigation onNavigate={handleNavigate} onSearch={handleSearch} />
-            <div className="py-16" style={{ backgroundColor: 'var(--theme-surfaceLight)' }}>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <QuoteRequestForm />
-              </div>
-            </div>
-            <Footer />
-          </div>
-        );
-      default:
-        return (
-          <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-background)' }}>
-            <Navigation onNavigate={handleNavigate} onSearch={handleSearch} />
-            <main>
-              <Hero />
-              <ProductCategories />
-              <ValueProposition />
-            </main>
-            <Footer />
-          </div>
-        );
-    }
-  };
+        </>
+    );
+};
 
-  return (
-    <ThemeProvider>
-      <div className="overflow-x-hidden">
-        {renderPage()}
-      </div>
-      <Toaster />
-    </ThemeProvider>
-  );
+const ProductDetailsPage = () => {
+    const { productId } = useParams();
+    // Assuming ProductDetails takes productId as a prop now
+    return (
+        <>
+            <ProductDetails productId={productId} />
+            <Footer />
+        </>
+    );
+};
+
+const SearchPage = () => {
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const query = searchParams.get('q');
+    const handleProductClick = (productId) => {
+        navigate(`/products/${productId}`);
+    };
+    return (
+        <>
+            <SearchResults searchQuery={query} onProductClick={handleProductClick} />
+            <Footer />
+        </>
+    );
+};
+
+const ContactPage = () => (
+    <>
+        <ContactForm />
+        <Footer />
+    </>
+);
+
+const QuotePage = () => (
+    <>
+        <QuoteRequestForm />
+        <Footer />
+    </>
+);
+
+const AdminProductManagementPage = () => {
+    const navigate = useNavigate();
+    return (
+        <ProductManagement
+            onNavigate={(page) => navigate(`/${page}`)}
+            onAddProduct={() => navigate('/admin-add-product')}
+            onEditProduct={(product) => navigate(`/admin-edit-product/${product.id}`, { state: { product } })}
+        />
+    );
+};
+
+const AdminProductFormPage = ({ isEdit = false }) => {
+    const navigate = useNavigate();
+    // In a real app, you'd fetch the product if isEdit is true and no state is passed
+    const { state } = useLocation(); 
+
+    const handleSaveProduct = (productData) => {
+        console.log("Saving product:", productData);
+        navigate("/admin-products");
+    };
+
+    return (
+        <ProductForm
+            product={isEdit ? state?.product : null}
+            onSave={handleSaveProduct}
+            onCancel={() => navigate("/admin-products")}
+        />
+    );
+};
+
+const AppContent = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    
+    // Check if the current path is the homepage
+    const isHomePage = location.pathname === '/';
+
+    return (
+        <div className={!isHomePage ? 'pt-16' : ''}> {/* Add padding-top to body if nav is present */}
+            {/* Conditionally render the Navigation component */}
+            {!isHomePage && <Navigation />}
+            
+            <main className="overflow-x-hidden">
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/products/:productId" element={<ProductDetailsPage />} />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/quote" element={<QuotePage />} />
+                    
+                    {/* Admin Routes */}
+                    <Route path="/admin-dashboard" element={<Dashboard onNavigate={(page) => navigate(`/${page}`)} />} />
+                    <Route path="/admin-products" element={<AdminProductManagementPage />} />
+                    <Route path="/admin-add-product" element={<AdminProductFormPage />} />
+                    <Route path="/admin-edit-product/:productId" element={<AdminProductFormPage isEdit />} />
+                </Routes>
+            </main>
+            <Toaster />
+        </div>
+    );
+}
+
+export default function App() {
+    return (
+        <ThemeProvider>
+            <HashRouter>
+                {/* The AppContent component now holds all the routing and layout logic */}
+                <AppContent />
+            </HashRouter>
+        </ThemeProvider>
+    );
 }

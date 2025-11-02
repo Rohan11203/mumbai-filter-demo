@@ -101,7 +101,7 @@ export function ContactForm() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-4xl mx-auto"
       >
         <Card className="text-center p-8 border-0 shadow-lg">
           <motion.div
@@ -139,7 +139,7 @@ export function ContactForm() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-7xl mx-auto pt-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Contact Information */}
         <motion.div

@@ -288,7 +288,7 @@ export function ProductForm({ product, onSave, onCancel }: {
           <Card className="border-0 shadow-xl">
             <CardContent className="p-0">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-6 rounded-none border-b-2 border-gray-100 bg-gray-50">
+                <TabsList className="grid w-full grid-cols-6 rounded-none border-b-2 h-14 border-gray-100 bg-gray-50">
                   <TabsTrigger value="basic" className="py-4 font-medium">
                     <Package className="w-4 h-4 mr-2" />
                     Basic Info

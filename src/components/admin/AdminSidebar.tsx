@@ -13,9 +13,9 @@ export function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className={`bg-white border-r border-gray-200 transition-all duration-300 ${collapsed ? 'w-16' : 'w-64'}`}>
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between">
+    <div className={`bg-white   border-r border-gray-200  transition-all duration-300 ${collapsed ? 'w-24' : 'w-64'}`}>
+      <div className="p-4 border-b border-gray-200 ">
+        <div className="flex items-center pl-3 justify-between ">
           {!collapsed && (
             <h2 className="font-semibold text-[#1A237E]">Admin Portal</h2>
           )}
@@ -36,7 +36,7 @@ export function AdminSidebar() {
           return (
             <button
               key={item.id}
-              className={`w-full flex items-center p-3 rounded-lg transition-colors duration-200 ${
+              className={`w-full flex items-center p-5 rounded-lg transition-colors duration-200 ${
                 item.active 
                   ? 'bg-[#007BFF] text-white' 
                   : 'text-gray-600 hover:bg-gray-100'

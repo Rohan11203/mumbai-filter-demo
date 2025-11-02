@@ -133,7 +133,7 @@ export function QuoteRequestForm() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-2xl mx-auto "
       >
         <Card className="text-center p-8 border-0 shadow-lg">
           <motion.div
@@ -191,7 +191,7 @@ export function QuoteRequestForm() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto pt-30">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

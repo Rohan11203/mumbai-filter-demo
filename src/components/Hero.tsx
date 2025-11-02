@@ -1,238 +1,195 @@
 import { useState, useEffect } from "react";
-import { motion } from "motion/react";
-import { Button } from "./ui/button";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { useTheme } from "./ThemeProvider";
-import { Play, CheckCircle, ArrowRight, Award, Users, Globe } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowRight,
+  Briefcase,
+  Users,
+  Globe,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { Navigation } from "./Navigation";
+import { NewNavbar } from "./ConstantNavbar/newNavbar";
+import { useNavigate } from "react-router-dom";
 
+// --- Mock Components for standalone running ---
+const Button = ({ children, className, ...props }) => (
+  <button
+    className={`px-4 py-2 rounded-lg font-semibold ${className}`}
+    {...props}
+  >
+    {children}
+  </button>
+);
+// --- End Mock Components ---
+
+// Updated stats with more corporate icons
 const heroStats = [
-  { icon: Award, value: "25+", label: "Years Experience", color: "text-blue-600" },
-  { icon: Users, value: "500+", label: "Projects Delivered", color: "text-green-600" },
-  { icon: Globe, value: "15+", label: "Countries Served", color: "text-purple-600" }
+  {
+    icon: Briefcase,
+    value: "25+ Years",
+    label: "of Market Leadership",
+    bgColor: "bg-blue-900/50",
+  },
+  {
+    icon: Users,
+    value: "1,200+ Clients",
+    label: "Served Globally",
+    bgColor: "bg-sky-800/60",
+  },
+  {
+    icon: Globe,
+    value: "Growth in 50+ Countries",
+    label: "Expanding Our Reach",
+    bgColor: "bg-blue-900/50",
+  },
 ];
+type PageType =
+  | "home"
+  | "products"
+  | "product-details"
+  | "contact"
+  | "quote"
+  | "search"
+  | "admin-dashboard"
+  | "admin-products"
+  | "admin-add-product"
+  | "admin-edit-product";
 
-const heroFeatures = [
-  "ISO 9001:2015 Certified Quality",
-  "24/7 Technical Support",
-  "Custom Engineering Solutions",
-  "Worldwide Service Network"
-];
-
+// Main Hero Component
 export function Hero() {
-  const { colors } = useTheme();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const heroImages = [
-    "https://images.unsplash.com/photo-1583737097428-af53774819a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNsYXJjaHwxfHxpbmR1c3RyaWFsJTIwbWFudWZhY3R1cmluZyUyMG1vZGVybiUyMGZhY2lsaXR5fGVufDF8fHx8MTc1NzU5NDY5M3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "https://images.unsplash.com/photo-1585366958403-bacb4c36a1a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNsYXJjaHwxfHxwcmVjaXNpb24lMjBlbmdpbmVlcmluZyUyMHRlY2hub2xvZ3l8ZW58MXx8fHwxNzU3NTk0Njk2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "https://images.unsplash.com/photo-1564605504543-1833fef7c1c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNsYXJjaHwxfHxpbmR1c3RyaWFsJTIwZmlsdHJhdGlvbiUyMGZhY2lsaXR5JTIwY2xlYW4lMjBtb2Rlcm58ZW58MXx8fHwxNzU3NTk0MDU1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+    "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1600880292203-942bb68b2432?q=80&w=1887&auto=format&fit=crop",
   ];
-
+  const nextImage = () =>
+    setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+  const prevImage = () =>
+    setCurrentImageIndex(
+      (prev) => (prev - 1 + heroImages.length) % heroImages.length
+    );
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
+    const interval = setInterval(nextImage, 3000);
     return () => clearInterval(interval);
-  }, [heroImages.length]);
+  }, []);
+
+  const navigate = useNavigate()
 
   return (
-    <section 
-      className="relative overflow-hidden"
-      style={{
-        background: `linear-gradient(to bottom right, ${colors.surfaceLight}, ${colors.background}, ${colors.surfaceLight})`
-      }}
-    >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='none' fill-rule='evenodd'%3e%3cg fill='%23000000' fill-opacity='0.1'%3e%3ccircle cx='30' cy='30' r='1'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e")`,
-        }} />
-      </div>
+    <div className="font-sans">
+      <section className="relative h-screen min-h-[800px] w-full text-white overflow-hidden flex flex-col">
+        <NewNavbar />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Content Side */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-8"
-          >
-            {/* Trust Badge */}
+        <AnimatePresence>
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            style={{ backgroundImage: `url(${heroImages[currentImageIndex]})` }}
+            className="absolute inset-0 w-full h-full bg-cover bg-center"
+          />
+        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-blue-950/70" />
+
+        <button
+          onClick={prevImage}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/20 rounded-full hover:bg-black/40 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+        >
+          {" "}
+          <ChevronLeft className="w-6 h-6" />{" "}
+        </button>
+        <button
+          onClick={nextImage}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/20 rounded-full hover:bg-black/40 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+        >
+          {" "}
+          <ChevronRight className="w-6 h-6" />{" "}
+        </button>
+        <div className="relative pt-18 z-10 flex-grow flex flex-col justify-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="inline-flex items-center bg-blue-50 border border-blue-100 rounded-full px-4 py-2 text-sm font-medium text-blue-700"
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="max-w-4xl mx-auto text-center"
             >
-              <Award className="w-4 h-4 mr-2" />
-              India's Leading Filtration Solutions Provider
-            </motion.div>
-
-            {/* Main Heading */}
-            <div className="space-y-4">
-              <motion.h1 
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight"
+              <h1
+                className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight"
+                style={{
+                  textShadow: "2px 2px 8px rgba(0,0,0,0.5)",
+                  fontFamily:
+                    " Roboto, sans-serif",
+                  letterSpacing: "-0.02em",
+                }}
               >
-                <span className="text-[#1A237E]">Precision</span>
-                <br />
-                <span className="text-[#1A237E]">Meets</span>
-                <br />
-                <span className="bg-gradient-to-r from-[#007BFF] to-[#0056b3] bg-clip-text text-transparent">
-                  Performance
-                </span>
-              </motion.h1>
-              
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                className="text-xl text-gray-600 leading-relaxed max-w-xl"
+                PRECISION FILTERATION FOR{" "}
+                <span className="text-sky-400">DEMANDING INDUSTRIES</span>
+              </h1>
+              <p
+                className="mt-8 text-lg md:text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed"
+                style={{
+                  textShadow: "1px 1px 4px rgba(0,0,0,0.7)",
+                  fontFamily:
+                    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                }}
               >
-                Advanced industrial filtration systems engineered for maximum efficiency, 
-                reliability, and performance across diverse industrial applications.
-              </motion.p>
-            </div>
-
-            {/* Features List */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="grid grid-cols-2 gap-3"
-            >
-              {heroFeatures.map((feature, index) => (
+                We engineer high-performance filtration solutions that enhance
+                purity, efficiency, and reliability for India's leading
+                industrial sectors.
+              </p>
+              <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 + index * 0.1, duration: 0.5 }}
-                  className="flex items-center space-x-3"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700 font-medium">{feature}</span>
+                  <Button
+                  onClick={() => { navigate("/products") }}
+                  className="group cursor-pointer flex items-center justify-center w-full sm:w-auto bg-sky-600 hover:bg-sky-500 text-white shadow-lg rounded-md px-8 py-4 text-base font-semibold transition-all duration-300">
+                    Explore Our Products{" "}
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                  </Button>
                 </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button className="group cursor-pointer flex items-center justify-center w-full sm:w-auto bg-transparent border-2 border-white/80 hover:bg-white hover:text-sky-600 text-white rounded-md px-8 py-4 text-base font-semibold transition-all duration-300">
+                    Talk to an Engineer
+                  </Button>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="relative z-10">
+          <div className="max-w-full mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+              className="grid grid-cols-1 md:grid-cols-3 text-center"
+            >
+              {heroStats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className={`p-8 backdrop-blur-sm border-t-2 border-white/10 ${stat.bgColor}`}
+                >
+                  <stat.icon className="w-10 h-10 mx-auto mb-4 text-sky-300" />
+                  <p className="text-2xl font-bold">{stat.value}</p>
+                  <p className="text-slate-300">{stat.label}</p>
+                </div>
               ))}
             </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 pt-4"
-            >
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Button 
-                  size="lg" 
-                  className="bg-gradient-to-r from-[#007BFF] to-[#0056b3] hover:from-[#0056b3] hover:to-[#004494] text-white shadow-xl group px-8 py-4"
-                >
-                  Explore Solutions
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                </Button>
-              </motion.div>
-              
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center justify-center px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 font-medium rounded-lg hover:border-[#007BFF] hover:text-[#007BFF] transition-all duration-200 group shadow-lg"
-              >
-                <Play className="mr-2 w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-                Watch Demo
-              </motion.button>
-            </motion.div>
-          </motion.div>
-
-          {/* Visual Side */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative"
-          >
-            {/* Main Image Container */}
-            <div className="relative">
-              <motion.div 
-                className="relative overflow-hidden rounded-2xl shadow-2xl"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="aspect-w-4 aspect-h-3">
-                  <ImageWithFallback
-                    src={heroImages[currentImageIndex]}
-                    alt="Advanced filtration facility"
-                    className="w-full h-96 lg:h-[500px] object-cover"
-                  />
-                </div>
-                
-                {/* Image Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-                
-                {/* Floating Stats Cards */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1, duration: 0.6 }}
-                  className="absolute bottom-6 left-6 right-6"
-                >
-                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                    <div className="grid grid-cols-3 gap-4">
-                      {heroStats.map((stat, index) => {
-                        const IconComponent = stat.icon;
-                        return (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1.2 + index * 0.1, duration: 0.4 }}
-                            className="text-center"
-                          >
-                            <div className={`inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-50 mb-2`}>
-                              <IconComponent className={`w-4 h-4 ${stat.color}`} />
-                            </div>
-                            <div className="font-bold text-gray-900">{stat.value}</div>
-                            <div className="text-xs text-gray-600">{stat.label}</div>
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
-
-              {/* Decorative Elements */}
-              <motion.div
-                animate={{ 
-                  rotate: 360,
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ 
-                  rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                }}
-                className="absolute -top-6 -right-6 w-24 h-24 bg-gradient-to-br from-[#007BFF]/20 to-[#1A237E]/20 rounded-full"
-              />
-              
-              <motion.div
-                animate={{ 
-                  rotate: -360,
-                  scale: [1, 0.9, 1]
-                }}
-                transition={{ 
-                  rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-                }}
-                className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-br from-[#1A237E]/10 to-[#007BFF]/10 rounded-full"
-              />
-            </div>
-          </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
